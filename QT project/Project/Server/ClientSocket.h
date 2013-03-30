@@ -1,0 +1,27 @@
+// ClientSocket.h
+
+#ifndef CLIENTSOCKET_H
+#define CLIENTSOCKET_H
+#include "../../lines/view/lines.h"
+#include <QtNetwork/QTcpSocket>
+
+class ClientSocket : public QTcpSocket
+{
+  Q_OBJECT
+  
+  public:
+    ClientSocket(Lines *window, QObject *parent = 0);
+  signals:
+  	void locationChanged(float newLocation, int id, QString busName);
+  	void populationChanged(int population, int stationID);
+  
+  private slots:
+    void readClient();
+    
+  private:
+    quint16 nextBlockSize;
+    void sendData(const QString &received);
+    Lines *ui;
+};
+
+#endif

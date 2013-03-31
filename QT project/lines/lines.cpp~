@@ -1,0 +1,130 @@
+#include "lines.h"
+#include <QPainter>
+#include <iostream>
+using namespace std;
+
+Lines::Lines(QWidget *parent)
+    : QWidget(parent)
+{
+	stop=NULL;
+	
+	//create bus stops
+	MRT = new QPushButton (tr("MRT"),this);
+	PGP = new QPushButton (tr("PGP"),this);
+	Biz = new QPushButton (tr("Biz"),this);
+	Com2 = new QPushButton (tr("Com2"),this);
+	Temasek = new QPushButton (tr("Temasek"),this);
+	Eusoff = new QPushButton (tr("Eusoff"),this);
+	Arts = new QPushButton (tr("Arts"),this);
+	Central = new QPushButton (tr("Central"),this);
+	YIH = new QPushButton (tr("YIH"),this);
+	Raffles = new QPushButton (tr("Raffles"),this);
+	Utown = new QPushButton (tr("Utown"),this);
+	E3A = new QPushButton (tr("E3A"),this);
+	MPSH = new QPushButton (tr("MPSH"),this);
+	Uhall = new QPushButton (tr("Uhall"),this);
+	Science = new QPushButton (tr("Science"),this);
+	//set object name
+	MRT->setObjectName("MRT");
+	PGP->setObjectName("PGP");
+	//set busstop location
+	MRT -> setGeometry (885, 235, 30, 30 );
+	PGP -> setGeometry (785, 385, 30, 30 );
+	Biz -> setGeometry (635, 385, 30, 30 );
+	Com2 -> setGeometry (485, 285, 30, 30 );
+	Temasek -> setGeometry (485, 485, 30, 30 );
+	Eusoff -> setGeometry (385, 485, 30, 30 );
+	Arts -> setGeometry (285, 385, 30, 30 );
+	Central -> setGeometry (285, 285, 30, 30 );
+	YIH -> setGeometry (285, 185, 30, 30 );
+	Raffles -> setGeometry (185, 85, 30, 30 );
+	Utown -> setGeometry (185, 5, 30, 30 );
+	E3A -> setGeometry (35, 85, 30, 30 );
+	MPSH -> setGeometry (385, 85, 30, 30 );
+	Uhall -> setGeometry (585, 85, 30, 30 );
+	Science -> setGeometry (785, 85, 30, 30 );
+	
+	createActions();
+    //drawStops();
+}
+
+void Lines::drawStops(){
+	//show bus stops	
+	MRT -> show();
+	PGP -> show();
+	Biz -> show();
+	Com2 -> show();
+	Temasek -> show();
+	Eusoff -> show();
+	Arts -> show();
+	Central -> show();
+	YIH -> show();
+	Raffles -> show();
+	Utown -> show();
+	E3A -> show();
+	MPSH -> show();
+	Uhall -> show();
+	Science -> show();
+}
+
+void Lines::createActions(){
+	QObject::connect(MRT, SIGNAL(clicked()),this,SLOT(popup()));
+	QObject::connect(PGP, SIGNAL(clicked()),this,SLOT(popup()));
+}
+
+void Lines::popup(){
+	//if(QString::compare(stop->getName(),QObject::sender() -> objectName())){
+		stop = new StopInfo(QObject::sender() -> objectName());
+		stop->show();
+	//}
+}
+
+//paint map
+void Lines::paintEvent(QPaintEvent *e)
+{
+  Q_UNUSED(e);
+  QPainter qp(this);
+  drawLines(&qp);
+}
+
+void Lines::drawLines(QPainter *qp)
+{ 
+  //BUS B/C route
+  QPen pen(Qt::green, 4, Qt::SolidLine);  
+  qp->setPen(pen);
+  qp->drawLine( 50, 100, 800, 100);
+  qp->drawLine(200, 100, 300, 200);
+  qp->drawLine(300, 200, 300, 400);
+  qp->drawLine(300, 400, 500, 400);
+  qp->drawLine(500, 300, 500, 500);
+  qp->drawLine(500, 500, 400, 500);
+  qp->drawLine(400, 500, 300, 400);
+
+  //pen.setStyle(Qt::DashLine);
+  //BUS D1/D2 route
+  QColor blue = QColor (102,204,255,255);
+  QPen pen2(blue, 4, Qt::SolidLine);  
+  qp->setPen(pen2);
+  qp->drawLine(196, 102, 196,  20);
+  qp->drawLine(196,  94, 800,  94);
+  qp->drawLine(197, 104, 293, 200);
+  qp->drawLine(294, 202, 294, 402);
+  qp->drawLine(294, 402, 396, 504);
+  qp->drawLine(396, 505, 502, 505);
+  qp->drawLine(505, 505, 505, 300);
+  qp->drawLine(295, 405, 650, 405);
+  
+  //BUS A1/A2 route
+  QColor orange = QColor (255,153,0,50);
+  QPen pen3(orange, 4, Qt::SolidLine);  
+  qp->setPen(pen3);
+  qp->drawLine(900, 250, 800, 106);
+  qp->drawLine(800, 106, 214, 106);
+  qp->drawLine(214, 106, 306, 198);
+  qp->drawLine(306, 200, 306, 396);
+  qp->drawLine(306, 394, 800, 394);
+  qp->drawLine(800, 394, 900, 250);
+  qp->drawLine(306, 398, 402, 494);
+  qp->drawLine(402, 494, 494, 494);
+  qp->drawLine(494, 494, 494, 300);
+}

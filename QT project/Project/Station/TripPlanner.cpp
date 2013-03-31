@@ -257,7 +257,10 @@ void TripPlanner::connectionClosedByServer()
   if (nextBlockSize != 0xFFFF)
   qDebug() << "Connection closed by server";
   closeConnection();
-  if (finished == true) workFinished();
+  if (finished == true) {
+    workFinished();
+    removeBus(busID);
+  }
 }
 void TripPlanner::error()
 {

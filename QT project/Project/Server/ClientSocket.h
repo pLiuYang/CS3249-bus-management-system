@@ -14,6 +14,7 @@ class ClientSocket : public QTcpSocket
   signals:
   	void locationChanged(float newLocation, int id, QString busName);
   	void populationChanged(int population, int stationID);
+  	void terminalReached(int id);
   
   private slots:
     void readClient();

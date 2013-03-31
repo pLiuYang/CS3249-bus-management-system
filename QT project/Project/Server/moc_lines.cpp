@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'lines.h'
 **
-** Created: Sat Mar 30 15:37:15 2013
+** Created: Sun Mar 31 23:58:16 2013
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_Lines[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -33,8 +33,9 @@ static const uint qt_meta_data_Lines[] = {
  // slots: signature, parameters, type, tag, flags
       30,    7,    6,    6, 0x0a,
       80,   59,    6,    6, 0x0a,
-     103,    6,    6,    6, 0x08,
-     111,    6,    6,    6, 0x08,
+     109,  103,    6,    6, 0x0a,
+     127,    6,    6,    6, 0x08,
+     135,    6,    6,    6, 0x08,
 
        0        // eod
 };
@@ -43,7 +44,7 @@ static const char qt_meta_stringdata_Lines[] = {
     "Lines\0\0location,busID,busName\0"
     "updateBus(float,int,QString)\0"
     "population,stationID\0updateStation(int,int)\0"
-    "popup()\0sendBus()\0"
+    "busid\0terminateBus(int)\0popup()\0send()\0"
 };
 
 void Lines::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -54,8 +55,9 @@ void Lines::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         switch (_id) {
         case 0: _t->updateBus((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
         case 1: _t->updateStation((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 2: _t->popup(); break;
-        case 3: _t->sendBus(); break;
+        case 2: _t->terminateBus((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 3: _t->popup(); break;
+        case 4: _t->send(); break;
         default: ;
         }
     }
@@ -93,9 +95,9 @@ int Lines::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 5)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 5;
     }
     return _id;
 }

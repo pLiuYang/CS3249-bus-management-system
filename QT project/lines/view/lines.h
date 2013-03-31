@@ -4,76 +4,50 @@
 #include <QWidget>
 #include <QPushButton>
 #include "StopInfo.h"
-//#include "BusStopControl.h"
-#include "../model/Bus.h"
 #include <QDebug>
 #include "../../Project/Shared.h"
+#include "../../Project/Server/TripServer.h"
+//#include <iostream>
+//#include <sstream>
+//using namespace std;
 
 #define MAX_NUM_OF_BUS 30
 
 class StopInfo;
 class QPushButton;
-class Bus;
-//class BusStopControl;
 
+//class BusStopControl;
+class TripServer;
 class Lines : public QWidget
 {
   Q_OBJECT  
 
   public:
-    Lines(QWidget *parent = 0);
+    Lines(TripServer *trip, QWidget *parent = 0);
     QPushButton *bstopArray[22];
     QPushButton *busBtnArray[MAX_NUM_OF_BUS];
-    float incremental;
-
-    int routeD1x[ROUTE_D1];
-    int routeD1y[ROUTE_D1];
-    int routeD2x[ROUTE_D2];
-    int routeD2y[ROUTE_D2];
-    int routeCx[ROUTE_C];
-    int routeCy[ROUTE_C];
-    int routeDx[ROUTE_B];
-    int routeDy[ROUTE_B];
-   /* QPushButton *MRT;
-  	QPushButton *oppMRT;
-  	QPushButton *Science;
-  	QPushButton *oppScience;
-  	QPushButton *Uhall;
-  	QPushButton *oppUhall;
-  	QPushButton *MPSH;
-  	QPushButton *oppMPSH;
-  	QPushButton *Utown;
-  	QPushButton *E3A;
-  	QPushButton *YIH;
-  	QPushButton *oppYIH;
-  	QPushButton *Central;
-  	QPushButton *oppCentral;
-  	QPushButton *Arts;
-  	QPushButton *oppArts;
-  	QPushButton *Eusoff;
-  	QPushButton *Temasek;
-  	QPushButton *Com2;
-  	QPushButton *Biz;
-  	QPushButton *oppBiz;
-  	QPushButton *PGP;*/
+    QPushButton *sendBus[6];
+	TripServer *server;
 
   public slots:
 	void updateBus(float location, int busID, QString busName);
 	void updateStation(int population, int stationID);
-
+	void terminateBus(int busid);
   protected:
     void paintEvent(QPaintEvent *event);
     void drawLines(QPainter *qp);
-    void createActions();
 
   private slots:
     void popup();
-    void sendBus();
+    //void sendBus();
+    void send();
     
      	
   private:	
   	StopInfo    *stop;
-  	Bus *bus[MAX_NUM_OF_BUS];
+    void createActions();
+   //ostringstream convert;   // stream used for the conversion
+    char* itos(int i);
   	//BusStopControl *bstopControl;
 };
 #endif

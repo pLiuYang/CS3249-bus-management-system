@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'TripServer.h'
 **
-** Created: Sat Mar 30 15:41:25 2013
+** Created: Sun Mar 31 23:58:15 2013
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!

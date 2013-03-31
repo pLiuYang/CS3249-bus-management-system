@@ -16,6 +16,7 @@ QTcpSocket(parent)
   nextBlockSize = 0;
   connect(this,SIGNAL(locationChanged(float, int ,QString)), ui, SLOT(updateBus(float, int, QString)));
   connect(this,SIGNAL(populationChanged(int, int)), ui, SLOT(updateStation(int, int)));
+  connect(this,SIGNAL(terminalReached(int)), ui, SLOT(terminateBus(int)));
 }
 
 void ClientSocket::readClient()
@@ -115,6 +116,7 @@ void ClientSocket::readClient()
     qDebug() << "Bus has arrived at last station";
     in >> busID >> busName >> qstation >> peopleGettingOff >> space;
      emit locationChanged(qstation, busID,busName);
+     emit terminalReached(busID);
     //sendData(received);
     //QDataStream out(this);
     //out << quint16(0xFFFF); // End of block flag.

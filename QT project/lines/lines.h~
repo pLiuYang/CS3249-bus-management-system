@@ -1,0 +1,45 @@
+#ifndef LINES_H
+#define LINES_H
+
+#include <QWidget>
+#include<QPushButton>
+#include "StopInfo.h"
+
+class StopInfo;
+class QPushButton;
+
+class Lines : public QWidget
+{
+  Q_OBJECT  
+
+  public:
+    Lines(QWidget *parent = 0);
+
+  protected:
+    void paintEvent(QPaintEvent *event);
+    void drawLines(QPainter *qp);
+    void drawStops();
+    void createActions();
+
+  private slots:
+    void popup();
+     	
+  private:
+  	QPushButton *MRT;
+  	QPushButton *Science;
+  	QPushButton *Uhall;
+  	QPushButton *MPSH;
+  	QPushButton *Utown;
+  	QPushButton *Raffles;
+  	QPushButton *E3A;
+  	QPushButton *YIH;
+  	QPushButton *Central;
+  	QPushButton *Arts;
+  	QPushButton *Eusoff;
+  	QPushButton *Temasek;
+  	QPushButton *Com2;
+  	QPushButton *Biz;
+  	QPushButton *PGP;
+  	StopInfo    *stop;
+};
+#endif

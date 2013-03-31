@@ -2,12 +2,12 @@
 #define SHARED_H
 
 #define TOTAL_STATION 21
-#define ROUTE_A1 10
-#define ROUTE_A2 12
-#define ROUTE_B 4
-#define ROUTE_C 5
-#define ROUTE_D1 8
-#define ROUTE_D2 8
+#define ROUTE_A1 11
+#define ROUTE_A2 13
+#define ROUTE_B 11
+#define ROUTE_C 8
+#define ROUTE_D1 11
+#define ROUTE_D2 9
 #define BUS_SPACE 50
 
 extern volatile int peopleAtStation[TOTAL_STATION];

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'StopInfo.h'
 **
-** Created: Sat Mar 30 14:24:36 2013
+** Created: Sun Mar 31 22:55:08 2013
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!

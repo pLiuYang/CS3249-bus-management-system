@@ -1,6 +1,10 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-    <file>bus.png</file>
-    <file>bus2.png</file>
+    <file>../../lines/view/A1.png</file>
+    <file>../../lines/view/A2.png</file>
+    <file>../../lines/view/D1.png</file>
+    <file>../../lines/view/D2.png</file>
+    <file>../../lines/view/B.png</file>
+    <file>../../lines/view/C.png</file>
 </qresource>
 </RCC>

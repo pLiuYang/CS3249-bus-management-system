@@ -123,12 +123,23 @@ void StationUpdater::initialiseStations()
   stationA2[5] = 9;
   stationA2[6] = 11;
   stationA2[7] = 13;
-  stationA2[8] = 14;
-  stationA2[9] = 16;
-  stationA2[10] = 19;
-  stationA2[11] =21;
-  stationA2[12] = 1;
-  stationA2[13] = 2;
+  stationA2[8] = 16;
+  stationA2[9] = 19;
+  stationA2[10] =21;
+  stationA2[11] = 1;
+  stationA2[12] = 2;
+  
+  stationB[0] = 15;
+  stationB[1] = 12;
+  stationB[2] = 10;
+  stationB[3] = 8;
+  stationB[4] = 5;
+  stationB[5] = 6;
+  stationB[6] = 7;
+  stationB[7] = 9;
+  stationB[8] = 11;
+  stationB[9] = 13;
+  stationB[10] = 15;
   
   stationC[0] = 15;
   stationC[1] = 16;
@@ -160,7 +171,6 @@ void StationUpdater::initialiseStations()
   stationD2[6] = 8;
   stationD2[7] = 5;
   stationD2[8] = 3;
-
 }
 
 // Add a new bus to running

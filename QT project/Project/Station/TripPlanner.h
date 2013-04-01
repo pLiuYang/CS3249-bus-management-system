@@ -3,7 +3,7 @@
 #include <QtNetwork/QTcpSocket>
 #include <QMutex>
 
-#define BUS_INCREMENT 0.5
+#define BUS_INCREMENT 0.01
 
 class TripPlanner: public QTcpSocket
 {

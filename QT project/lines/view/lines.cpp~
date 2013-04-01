@@ -118,11 +118,29 @@ Lines::Lines(TripServer *trip, QWidget *parent)
 	
 	//create buses
 	for (int i = 0; i < MAX_NUM_OF_BUS ; i++) {
-		busBtnArray[i] = new QPushButton (QIcon (":bus2.png"), "", this);
+		if(i<5){
+			QPixmap pixmap("../../lines/view/bus2.png");
+			QIcon icon(pixmap);
+			
+			busBtnArray[i] = new QPushButton (/*QIcon ("../../lines/view/bus.JPG"), */"", this);
+			busBtnArray[i]->setIcon(icon);
+			
+			//busBtnArray[i] -> setStyleSheet("image: url(:../../lines/view/A2.png)");
+		}else if(i<10){
+			busBtnArray[i] = new QPushButton (QIcon ("../../lines/view/A2.png"), "", this);
+		}else if(i<15){
+			busBtnArray[i] = new QPushButton (QIcon ("../../lines/view/D1.png"), "", this);
+		}else if(i<20){
+			busBtnArray[i] = new QPushButton (QIcon ("../../lines/view/D2.png"), "", this);
+		}else if(i<25){
+			busBtnArray[i] = new QPushButton (QIcon ("../../lines/view/B.png"), "", this);
+		}else{
+			busBtnArray[i] = new QPushButton (QIcon ("../../lines/view/C.png"), "", this);
+		}
 		busBtnArray[i] -> setGeometry (i*30, 0, 20, 20 );
 		busBtnArray[i]->setIconSize(QSize(25,25));
 		//disable bustop click
-		busBtnArray[i]->setEnabled(false);
+		//busBtnArray[i]->setEnabled(false);
 		//hide bus first
 		busBtnArray[i]-> hide();
 	}

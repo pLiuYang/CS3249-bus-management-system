@@ -105,7 +105,7 @@ void TripServer::sendBus(char* busName, char* busID)
   newBus->moveToThread(bus);
   connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
   connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
-  connect(newBus, SIGNAL(removeBus(int)), this, SLOT(removeBus(int)));
+ // connect(newBus, SIGNAL(removeBus(int)), this, SLOT(removeBus(int)));
   connect(bus, SIGNAL(finished()), newBus, SLOT(deleteLater()) );
   connect(bus, SIGNAL(finished()), bus, SLOT(deleteLater()) );
   bus->start();

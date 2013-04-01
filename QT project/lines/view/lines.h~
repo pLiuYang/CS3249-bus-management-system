@@ -32,7 +32,7 @@ class Lines : public QWidget
   public slots:
 	void updateBus(float location, int busID, QString busName);
 	void updateStation(int population, int stationID);
-	void terminateBus(int busID);
+	void terminateBus(int busid);
   protected:
     void paintEvent(QPaintEvent *event);
     void drawLines(QPainter *qp);

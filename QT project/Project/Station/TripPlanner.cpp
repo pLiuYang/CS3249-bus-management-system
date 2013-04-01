@@ -63,7 +63,7 @@ void TripPlanner::startSending()
 {
   QTimer *timer = new QTimer(this);
   connect(timer,SIGNAL(timeout()), this, SLOT(connectToServer()));
-  timer->start(qrand() % 2000);
+  timer->start(50);
 }
 
 void TripPlanner::connectToServer()

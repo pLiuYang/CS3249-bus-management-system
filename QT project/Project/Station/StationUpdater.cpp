@@ -14,8 +14,14 @@ StationUpdater::StationUpdater(QObject *parent): QTcpServer(parent)
   initialiseBuses();
   initialisePeopleAtStations();
   updateStationTimer();
-  //startA1Timer();
-  //startA2Timer();
+  
+  // Uncomment to run buses on timers
+ // startA1Timer();
+ // startA2Timer();
+ // startBTimer();
+ // startCTimer();
+ // startD1Timer();
+ // startD2Timer();
 }
 
 void StationUpdater::incomingConnection(int socketId)
@@ -27,22 +33,23 @@ void StationUpdater::incomingConnection(int socketId)
 
 void StationUpdater::createBus(int busID, char* busName)
 {
-  busMutex.lock();
-  arrayOfBuses[busID] = 0;
-  busMutex.unlock();
-  
-  char bus_id[10];
-  snprintf(bus_id, sizeof(bus_id), "%d", busID);
-  QThread *bus = new QThread();
-  TripPlanner *newBus = new TripPlanner(busName,bus_id);
-  newBus->moveToThread(bus);
-  connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
-  connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
-  connect(newBus, SIGNAL(removeBus(int)), this, SLOT(removeBus(int)));
-  connect(bus, SIGNAL(finished()), newBus, SLOT(deleteLater()) );
-  connect(bus, SIGNAL(finished()), bus, SLOT(deleteLater()) );
-  bus->start();
-
+  if (arrayOfBuses[busID] != 0) {
+    busMutex.lock();
+    arrayOfBuses[busID] = 0;
+    busMutex.unlock();
+    
+    char bus_id[10];
+    snprintf(bus_id, sizeof(bus_id), "%d", busID);
+    QThread *bus = new QThread();
+    TripPlanner *newBus = new TripPlanner(busName,bus_id);
+    newBus->moveToThread(bus);
+    connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
+    connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
+    connect(newBus, SIGNAL(removeBus(int)), this, SLOT(removeBus(int)));
+    connect(bus, SIGNAL(finished()), newBus, SLOT(deleteLater()) );
+    connect(bus, SIGNAL(finished()), bus, SLOT(deleteLater()) );
+    bus->start();
+  }
 }
 
 void StationUpdater::initialiseBuses()
@@ -54,6 +61,8 @@ void StationUpdater::initialiseBuses()
     busMutex.unlock();
   }
 }
+
+// TIMERS - change to set how often a bus is started
 
 void StationUpdater::startA1Timer()
 {
@@ -69,36 +78,142 @@ void StationUpdater::startA2Timer()
   A2Timer->start(5000);
 }
 
+void StationUpdater::startBTimer()
+{
+  QTimer *BTimer = new QTimer(this);
+  connect(BTimer,SIGNAL(timeout()), this, SLOT(createBusB()));
+  BTimer->start(5000);
+}
+
+void StationUpdater::startCTimer()
+{
+  QTimer *CTimer = new QTimer(this);
+  connect(CTimer,SIGNAL(timeout()), this, SLOT(createBusC()));
+  CTimer->start(5000);
+}
+
+void StationUpdater::startD1Timer()
+{
+  QTimer *D1Timer = new QTimer(this);
+  connect(D1Timer,SIGNAL(timeout()), this, SLOT(createBusD1()));
+  D1Timer->start(5000);
+}
+
+void StationUpdater::startD2Timer()
+{
+  QTimer *D2Timer = new QTimer(this);
+  connect(D2Timer,SIGNAL(timeout()), this, SLOT(createBusD2()));
+  D2Timer->start(5000);
+}
+
+// CREATE BUSES
+
 void StationUpdater::createBusA1()
 {
   char bus_id[10];
   int id = addBus();
-  snprintf(bus_id, sizeof(bus_id), "%d", id);
-  QThread *bus = new QThread();
-  TripPlanner *newBus = new TripPlanner("A1",bus_id);
-  newBus->moveToThread(bus);
-  connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
-  connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
-  connect(newBus, SIGNAL(removeBus(int)), this, SLOT(removeBus(int)));
-  connect(bus, SIGNAL(finished()), newBus, SLOT(deleteLater()) );
-  connect(bus, SIGNAL(finished()), bus, SLOT(deleteLater()) );
-  bus->start();
+  if (id >= 0) {
+    snprintf(bus_id, sizeof(bus_id), "%d", id);
+    QThread *bus = new QThread();
+    TripPlanner *newBus = new TripPlanner("A1",bus_id);
+    newBus->moveToThread(bus);
+    connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
+    connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
+    connect(newBus, SIGNAL(removeBus(int)), this, SLOT(removeBus(int)));
+    connect(bus, SIGNAL(finished()), newBus, SLOT(deleteLater()) );
+    connect(bus, SIGNAL(finished()), bus, SLOT(deleteLater()) );
+    bus->start();
+  }
 }
 
 void StationUpdater::createBusA2()
 {
   char bus_id[10];
   int id = addBus();
-  snprintf(bus_id, sizeof(bus_id), "%d", id);
-  QThread *bus = new QThread();
-  TripPlanner *newBus = new TripPlanner("A2",bus_id);
-  newBus->moveToThread(bus);
-  connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
-  connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
-  connect(newBus, SIGNAL(workFinished()), this, SLOT(removeBus(bus_id)));
-  connect(bus, SIGNAL(finished()), newBus, SLOT(deleteLater()) );
-  connect(bus, SIGNAL(finished()), bus, SLOT(deleteLater()) );
-  bus->start();
+  if (id >= 0) {
+    snprintf(bus_id, sizeof(bus_id), "%d", id);
+    QThread *bus = new QThread();
+    TripPlanner *newBus = new TripPlanner("A2",bus_id);
+    newBus->moveToThread(bus);
+    connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
+    connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
+    connect(newBus, SIGNAL(workFinished()), this, SLOT(removeBus(bus_id)));
+    connect(bus, SIGNAL(finished()), newBus, SLOT(deleteLater()) );
+    connect(bus, SIGNAL(finished()), bus, SLOT(deleteLater()) );
+    bus->start();
+  }
+}
+
+void StationUpdater::createBusB()
+{
+  char bus_id[10];
+  int id = addBus();
+  if (id >= 0) {
+    snprintf(bus_id, sizeof(bus_id), "%d", id);
+    QThread *bus = new QThread();
+    TripPlanner *newBus = new TripPlanner("B",bus_id);
+    newBus->moveToThread(bus);
+    connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
+    connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
+    connect(newBus, SIGNAL(removeBus(int)), this, SLOT(removeBus(int)));
+    connect(bus, SIGNAL(finished()), newBus, SLOT(deleteLater()) );
+    connect(bus, SIGNAL(finished()), bus, SLOT(deleteLater()) );
+    bus->start();
+  }
+}
+
+void StationUpdater::createBusC()
+{
+  char bus_id[10];
+  int id = addBus();
+  if (id >= 0) {
+    snprintf(bus_id, sizeof(bus_id), "%d", id);
+    QThread *bus = new QThread();
+    TripPlanner *newBus = new TripPlanner("C",bus_id);
+    newBus->moveToThread(bus);
+    connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
+    connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
+    connect(newBus, SIGNAL(removeBus(int)), this, SLOT(removeBus(int)));
+    connect(bus, SIGNAL(finished()), newBus, SLOT(deleteLater()) );
+    connect(bus, SIGNAL(finished()), bus, SLOT(deleteLater()) );
+    bus->start();
+  }
+}
+
+void StationUpdater::createBusD1()
+{
+  char bus_id[10];
+  int id = addBus();
+  if (id >= 0) {
+    snprintf(bus_id, sizeof(bus_id), "%d", id);
+    QThread *bus = new QThread();
+    TripPlanner *newBus = new TripPlanner("D1",bus_id);
+    newBus->moveToThread(bus);
+    connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
+    connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
+    connect(newBus, SIGNAL(removeBus(int)), this, SLOT(removeBus(int)));
+    connect(bus, SIGNAL(finished()), newBus, SLOT(deleteLater()) );
+    connect(bus, SIGNAL(finished()), bus, SLOT(deleteLater()) );
+    bus->start();
+  }
+}
+
+void StationUpdater::createBusD2()
+{
+  char bus_id[10];
+  int id = addBus();
+  if (id >= 0) {
+    snprintf(bus_id, sizeof(bus_id), "%d", id);
+    QThread *bus = new QThread();
+    TripPlanner *newBus = new TripPlanner("D2",bus_id);
+    newBus->moveToThread(bus);
+    connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
+    connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
+    connect(newBus, SIGNAL(removeBus(int)), this, SLOT(removeBus(int)));
+    connect(bus, SIGNAL(finished()), newBus, SLOT(deleteLater()) );
+    connect(bus, SIGNAL(finished()), bus, SLOT(deleteLater()) );
+    bus->start();
+  }
 }
 
 void StationUpdater::initialiseStations()
@@ -176,7 +291,7 @@ void StationUpdater::initialiseStations()
 // Add a new bus to running
 int StationUpdater::addBus()
 {
-  int bus_id;
+  int bus_id = -1;
   for (int i = 0; i < 30; i++)
   {
     if (arrayOfBuses[i] == 1)
@@ -215,7 +330,11 @@ void StationUpdater::updateStationTimer()
 {
   QTimer *stationTimer = new QTimer(this);
   connect(stationTimer,SIGNAL(timeout()), this, SLOT(updateStation()));
-  stationTimer->start(qrand() % 5000);
+  stationTimer->start(5000);
+  
+  QTimer *sendTimer = new QTimer(this);
+  connect(sendTimer,SIGNAL(timeout()),this,SLOT(updateServer()));
+  sendTimer->start(100);
 }
 
 void StationUpdater::updateStation()
@@ -226,9 +345,15 @@ void StationUpdater::updateStation()
     peopleAtStation[i] = peopleAtStation[i] + (qrand() % 5);
     this->mutex.unlock();
     qDebug() << "Number of people at station[" << i << "] = " << peopleAtStation[i];
+  }
+}
+
+void StationUpdater::updateServer()
+{
+  for (int i = 0; i < TOTAL_STATION; i++)
+  {
     updateNumberOfPeople(i,peopleAtStation[i]);
   }
-  
 }
 
 void StationUpdater::updateNumberOfPeople(int stationNumber, int people)

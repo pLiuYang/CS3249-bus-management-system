@@ -265,6 +265,7 @@ void TripPlanner::connectionClosedByServer()
 void TripPlanner::error()
 {
   qDebug() << "ERROR: " << this->errorString();
+  // Try connecting again after 500ms
   closeConnection();
   exit(1);
 }

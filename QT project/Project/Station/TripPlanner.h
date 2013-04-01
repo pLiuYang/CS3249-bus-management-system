@@ -1,5 +1,5 @@
 // TripPlanner.h
-
+//asdfsaf
 #include <QtNetwork/QTcpSocket>
 #include <QMutex>
 

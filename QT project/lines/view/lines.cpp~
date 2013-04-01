@@ -119,11 +119,11 @@ Lines::Lines(TripServer *trip, QWidget *parent)
 	//create buses
 	for (int i = 0; i < MAX_NUM_OF_BUS ; i++) {
 		if(i<5){
-			QPixmap pixmap("../../lines/view/bus2.png");
-			QIcon icon(pixmap);
+			//QPixmap pixmap("../../lines/view/bus2.png");
+			//QIcon icon(pixmap);
 			
-			busBtnArray[i] = new QPushButton (/*QIcon ("../../lines/view/bus.JPG"), */"", this);
-			busBtnArray[i]->setIcon(icon);
+			busBtnArray[i] = new QPushButton (QIcon ("../../lines/view/A1.png"), "", this);
+			//busBtnArray[i]->setIcon(icon);
 			
 			//busBtnArray[i] -> setStyleSheet("image: url(:../../lines/view/A2.png)");
 		}else if(i<10){
@@ -153,6 +153,8 @@ Lines::Lines(TripServer *trip, QWidget *parent)
 		QString tooltip = QString("<h2 style=\"margin-bottom:0px\">"+bstopArray[i]->objectName()+"</h2>") + QString("<span style=\"font:20px\">0</span> people waiting");
 		bstopArray[i] -> setToolTip(tooltip);
 	}
+	
+	//initialize 
 	
 	//connect signals
 	createActions();
@@ -457,22 +459,22 @@ void Lines::updateBus(float location, int busID , QString busName) {
 		
 		if(location>0 && location<0.5){
 			p*=2;
-			busBtnArray[busID] -> setGeometry (routeD2x[t]*(1-p)+205*p, routeD2y[t]*(1-p)+106*p, 20, 20 );
+			busBtnArray[busID] -> setGeometry (routeBx[t]*(1-p)+205*p, routeBy[t]*(1-p)+106*p, 20, 20 );
 		}else if(location>=0.5 && location<1){
 			p=(p-0.5)*2;
-			busBtnArray[busID] -> setGeometry (205*(1-p)+routeD2x[t2]*p, 106*(1-p)+routeD2y[t2]*p, 20, 20 );
+			busBtnArray[busID] -> setGeometry (205*(1-p)+routeBx[t2]*p, 106*(1-p)+routeBy[t2]*p, 20, 20 );
 		}else if(location>3 && location<3.5){
-			busBtnArray[busID] -> setGeometry (routeD2x[t]*(1-p)+500*p, routeD2y[t]*(1-p)+400*p, 20, 20 );
+			busBtnArray[busID] -> setGeometry (routeBx[t]*(1-p)+500*p, routeBy[t]*(1-p)+400*p, 20, 20 );
 			p*=2;
 		}else if(location>=3.5 && location<4){
 			p=(p-0.5)*2;
-			busBtnArray[busID] -> setGeometry (500*(1-p)+routeD2x[t2]*p, 400*(1-p)+routeD2y[t2]*p, 20, 20 );
+			busBtnArray[busID] -> setGeometry (500*(1-p)+routeBx[t2]*p, 400*(1-p)+routeBy[t2]*p, 20, 20 );
 		}else if(location>9 && location<9.5){
 			p*=2;
-			busBtnArray[busID] -> setGeometry (routeD2x[t]*(1-p)+205*p, routeD2y[t]*(1-p)+106*p, 20, 20 );
+			busBtnArray[busID] -> setGeometry (routeBx[t]*(1-p)+205*p, routeBy[t]*(1-p)+106*p, 20, 20 );
 		}else if(location>=9.5 && location<10){
 			p=(p-0.5)*2;
-			busBtnArray[busID] -> setGeometry (205*(1-p)+routeD2x[t2]*p, 106*(1-p)+routeD2y[t2]*p, 20, 20 );
+			busBtnArray[busID] -> setGeometry (205*(1-p)+routeBx[t2]*p, 106*(1-p)+routeBy[t2]*p, 20, 20 );
 		}else{
 			busBtnArray[busID] -> setGeometry (routeBx[t]*(1-p)+routeBx[t2]*p, routeBy[t]*(1-p)+routeBy[t2]*p, 20, 20 );
 			qDebug()<<"x "<<routeBx[t]*(1-p)<<" y "<<routeBx[t2]*p;

@@ -154,6 +154,8 @@ Lines::Lines(TripServer *trip, QWidget *parent)
 		bstopArray[i] -> setToolTip(tooltip);
 	}
 	
+	//initialize 
+	
 	//connect signals
 	createActions();
 }
@@ -457,22 +459,22 @@ void Lines::updateBus(float location, int busID , QString busName) {
 		
 		if(location>0 && location<0.5){
 			p*=2;
-			busBtnArray[busID] -> setGeometry (routeD2x[t]*(1-p)+205*p, routeD2y[t]*(1-p)+106*p, 20, 20 );
+			busBtnArray[busID] -> setGeometry (routeBx[t]*(1-p)+205*p, routeBy[t]*(1-p)+106*p, 20, 20 );
 		}else if(location>=0.5 && location<1){
 			p=(p-0.5)*2;
-			busBtnArray[busID] -> setGeometry (205*(1-p)+routeD2x[t2]*p, 106*(1-p)+routeD2y[t2]*p, 20, 20 );
+			busBtnArray[busID] -> setGeometry (205*(1-p)+routeBx[t2]*p, 106*(1-p)+routeBy[t2]*p, 20, 20 );
 		}else if(location>3 && location<3.5){
-			busBtnArray[busID] -> setGeometry (routeD2x[t]*(1-p)+500*p, routeD2y[t]*(1-p)+400*p, 20, 20 );
 			p*=2;
+			busBtnArray[busID] -> setGeometry (routeBx[t]*(1-p)+500*p, routeBy[t]*(1-p)+400*p, 20, 20 );
 		}else if(location>=3.5 && location<4){
 			p=(p-0.5)*2;
-			busBtnArray[busID] -> setGeometry (500*(1-p)+routeD2x[t2]*p, 400*(1-p)+routeD2y[t2]*p, 20, 20 );
+			busBtnArray[busID] -> setGeometry (500*(1-p)+routeBx[t2]*p, 400*(1-p)+routeBy[t2]*p, 20, 20 );
 		}else if(location>9 && location<9.5){
 			p*=2;
-			busBtnArray[busID] -> setGeometry (routeD2x[t]*(1-p)+205*p, routeD2y[t]*(1-p)+106*p, 20, 20 );
+			busBtnArray[busID] -> setGeometry (routeBx[t]*(1-p)+205*p, routeBy[t]*(1-p)+106*p, 20, 20 );
 		}else if(location>=9.5 && location<10){
 			p=(p-0.5)*2;
-			busBtnArray[busID] -> setGeometry (205*(1-p)+routeD2x[t2]*p, 106*(1-p)+routeD2y[t2]*p, 20, 20 );
+			busBtnArray[busID] -> setGeometry (205*(1-p)+routeBx[t2]*p, 106*(1-p)+routeBy[t2]*p, 20, 20 );
 		}else{
 			busBtnArray[busID] -> setGeometry (routeBx[t]*(1-p)+routeBx[t2]*p, routeBy[t]*(1-p)+routeBy[t2]*p, 20, 20 );
 			qDebug()<<"x "<<routeBx[t]*(1-p)<<" y "<<routeBx[t2]*p;

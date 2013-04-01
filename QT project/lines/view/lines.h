@@ -5,7 +5,7 @@
 #include <QPushButton>
 #include "StopInfo.h"
 #include <QDebug>
-#include <QLable>
+#include <QLabel>
 #include "../../Project/Shared.h"
 #include "../../Project/Server/TripServer.h"
 //#include <iostream>
@@ -16,7 +16,7 @@
 
 class StopInfo;
 class QPushButton;
-class QLable;
+class QLabel;
 
 //class BusStopControl;
 class TripServer;
@@ -30,7 +30,7 @@ class Lines : public QWidget
     QPushButton *busBtnArray[MAX_NUM_OF_BUS];
     QPushButton *sendBus[6];
 	TripServer *server;
-	QLable *freeBus[6];
+	QLabel *freeBus[6];
 
   public slots:
 	void updateBus(float location, int busID, QString busName);

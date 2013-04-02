@@ -18,10 +18,10 @@ StationUpdater::StationUpdater(QObject *parent): QTcpServer(parent)
   // Uncomment to run buses on timers
   startA1Timer();
   startA2Timer();
- // startBTimer();
- // startCTimer();
- // startD1Timer();
- // startD2Timer();
+  startBTimer();
+  startCTimer();
+  startD1Timer();
+  startD2Timer();
 }
 
 void StationUpdater::incomingConnection(int socketId)
@@ -302,19 +302,19 @@ int StationUpdater::addBus(QString busID)
     i = 5;
     j = 9;
   }
-  else if (busID.startsWith("B")) {
+  else if (busID.startsWith("D1")) {
     i = 10;
     j = 14;
   }
-  else if (busID.startsWith("C")) {
+  else if (busID.startsWith("D2")) {
     i = 15;
     j = 19;
   }
-  else if (busID.startsWith("D1")) {
+  else if (busID.startsWith("B")) {
     i = 20;
     j = 24;
   }
-  else if (busID.startsWith("D2")) {
+  else if (busID.startsWith("C")) {
     i = 25;
     j = 29;
   }

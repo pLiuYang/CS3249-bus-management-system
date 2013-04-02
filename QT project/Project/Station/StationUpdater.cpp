@@ -16,12 +16,12 @@ StationUpdater::StationUpdater(QObject *parent): QTcpServer(parent)
   updateStationTimer();
   
   // Uncomment to run buses on timers
-  startA1Timer();
-  startA2Timer();
-  startBTimer();
-  startCTimer();
-  startD1Timer();
-  startD2Timer();
+  //startA1Timer();
+  //startA2Timer();
+  //startBTimer();
+  //startCTimer();
+  //startD1Timer();
+  //startD2Timer();
 }
 
 void StationUpdater::incomingConnection(int socketId)
@@ -82,14 +82,14 @@ void StationUpdater::startBTimer()
 {
   QTimer *BTimer = new QTimer(this);
   connect(BTimer,SIGNAL(timeout()), this, SLOT(createBusB()));
-  BTimer->start(15000);
+  BTimer->start(25000);
 }
 
 void StationUpdater::startCTimer()
 {
   QTimer *CTimer = new QTimer(this);
   connect(CTimer,SIGNAL(timeout()), this, SLOT(createBusC()));
-  CTimer->start(15000);
+  CTimer->start(25000);
 }
 
 void StationUpdater::startD1Timer()

@@ -16,7 +16,7 @@ StationUpdater::StationUpdater(QObject *parent): QTcpServer(parent)
   updateStationTimer();
   
   // Uncomment to run buses on timers
- // startA1Timer();
+  startA1Timer();
  // startA2Timer();
  // startBTimer();
  // startCTimer();
@@ -334,7 +334,7 @@ void StationUpdater::updateStationTimer()
   
   QTimer *sendTimer = new QTimer(this);
   connect(sendTimer,SIGNAL(timeout()),this,SLOT(updateServer()));
-  sendTimer->start(100);
+  sendTimer->start(500);
 }
 
 void StationUpdater::updateStation()

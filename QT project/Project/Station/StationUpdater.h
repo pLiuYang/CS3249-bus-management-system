@@ -37,7 +37,7 @@ class StationUpdater: public QTcpServer
     void startD2Timer();
     void updateNumberOfPeople(int stationNumber, int people);
     char *route;
-    int addBus();
+    int addBus(QString busID);
     int arrayOfBuses[30];
     
     

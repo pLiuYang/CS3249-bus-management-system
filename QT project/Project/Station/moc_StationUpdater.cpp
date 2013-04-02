@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'StationUpdater.h'
 **
-** Created: Mon Apr 1 21:49:36 2013
+** Created: Tue Apr 2 11:44:21 2013
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.2)
 **
 ** WARNING! All changes made in this file will be lost!

@@ -17,7 +17,7 @@ StationUpdater::StationUpdater(QObject *parent): QTcpServer(parent)
   
   // Uncomment to run buses on timers
   startA1Timer();
- // startA2Timer();
+  startA2Timer();
  // startBTimer();
  // startCTimer();
  // startD1Timer();
@@ -68,42 +68,42 @@ void StationUpdater::startA1Timer()
 {
   QTimer *A1Timer = new QTimer(this);
   connect(A1Timer,SIGNAL(timeout()), this, SLOT(createBusA1()));
-  A1Timer->start(5000);
+  A1Timer->start(15000);
 }
 
 void StationUpdater::startA2Timer()
 {
   QTimer *A2Timer = new QTimer(this);
   connect(A2Timer,SIGNAL(timeout()), this, SLOT(createBusA2()));
-  A2Timer->start(5000);
+  A2Timer->start(15000);
 }
 
 void StationUpdater::startBTimer()
 {
   QTimer *BTimer = new QTimer(this);
   connect(BTimer,SIGNAL(timeout()), this, SLOT(createBusB()));
-  BTimer->start(5000);
+  BTimer->start(15000);
 }
 
 void StationUpdater::startCTimer()
 {
   QTimer *CTimer = new QTimer(this);
   connect(CTimer,SIGNAL(timeout()), this, SLOT(createBusC()));
-  CTimer->start(5000);
+  CTimer->start(15000);
 }
 
 void StationUpdater::startD1Timer()
 {
   QTimer *D1Timer = new QTimer(this);
   connect(D1Timer,SIGNAL(timeout()), this, SLOT(createBusD1()));
-  D1Timer->start(5000);
+  D1Timer->start(15000);
 }
 
 void StationUpdater::startD2Timer()
 {
   QTimer *D2Timer = new QTimer(this);
   connect(D2Timer,SIGNAL(timeout()), this, SLOT(createBusD2()));
-  D2Timer->start(5000);
+  D2Timer->start(15000);
 }
 
 // CREATE BUSES
@@ -111,7 +111,7 @@ void StationUpdater::startD2Timer()
 void StationUpdater::createBusA1()
 {
   char bus_id[10];
-  int id = addBus();
+  int id = addBus("A1");
   if (id >= 0) {
     snprintf(bus_id, sizeof(bus_id), "%d", id);
     QThread *bus = new QThread();
@@ -129,7 +129,7 @@ void StationUpdater::createBusA1()
 void StationUpdater::createBusA2()
 {
   char bus_id[10];
-  int id = addBus();
+  int id = addBus("A2");
   if (id >= 0) {
     snprintf(bus_id, sizeof(bus_id), "%d", id);
     QThread *bus = new QThread();
@@ -147,7 +147,7 @@ void StationUpdater::createBusA2()
 void StationUpdater::createBusB()
 {
   char bus_id[10];
-  int id = addBus();
+  int id = addBus("B");
   if (id >= 0) {
     snprintf(bus_id, sizeof(bus_id), "%d", id);
     QThread *bus = new QThread();
@@ -165,7 +165,7 @@ void StationUpdater::createBusB()
 void StationUpdater::createBusC()
 {
   char bus_id[10];
-  int id = addBus();
+  int id = addBus("C");
   if (id >= 0) {
     snprintf(bus_id, sizeof(bus_id), "%d", id);
     QThread *bus = new QThread();
@@ -183,7 +183,7 @@ void StationUpdater::createBusC()
 void StationUpdater::createBusD1()
 {
   char bus_id[10];
-  int id = addBus();
+  int id = addBus("D1");
   if (id >= 0) {
     snprintf(bus_id, sizeof(bus_id), "%d", id);
     QThread *bus = new QThread();
@@ -201,7 +201,7 @@ void StationUpdater::createBusD1()
 void StationUpdater::createBusD2()
 {
   char bus_id[10];
-  int id = addBus();
+  int id = addBus("D2");
   if (id >= 0) {
     snprintf(bus_id, sizeof(bus_id), "%d", id);
     QThread *bus = new QThread();
@@ -289,10 +289,36 @@ void StationUpdater::initialiseStations()
 }
 
 // Add a new bus to running
-int StationUpdater::addBus()
+int StationUpdater::addBus(QString busID)
 {
   int bus_id = -1;
-  for (int i = 0; i < 30; i++)
+  int i = 0;
+  int j = 0;
+  if (busID.startsWith("A1")) {
+    i = 0;
+    j = 4;
+  }
+  else if (busID.startsWith("A2")) {
+    i = 5;
+    j = 9;
+  }
+  else if (busID.startsWith("B")) {
+    i = 10;
+    j = 14;
+  }
+  else if (busID.startsWith("C")) {
+    i = 15;
+    j = 19;
+  }
+  else if (busID.startsWith("D1")) {
+    i = 20;
+    j = 24;
+  }
+  else if (busID.startsWith("D2")) {
+    i = 25;
+    j = 29;
+  }
+  for (i; i < j+1; i++)
   {
     if (arrayOfBuses[i] == 1)
     {

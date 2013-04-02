@@ -1,6 +1,7 @@
 // TripPlanner.cpp
 #include "TripPlanner.h"
 #include <QTimer>
+#include <QTime>
 #include <QtNetwork/QHostAddress>
 #include <sstream>
 #include "../Shared.h"
@@ -125,6 +126,11 @@ void TripPlanner::sendRequest()
       qDebug() << "Sending request...";
       qDebug() << "Message is " << quint16(0) << quint8('B') << busID << busName << station << peopleGettingOff << space;
       
+      QTime dieTime = QTime::currentTime().addSecs(1);
+      while( QTime::currentTime() < dieTime ) {
+        // Do Nothing
+      }
+      
       out << quint16(0) << quint8('B') << busID << busName << station << peopleGettingOff << space;
 
       out.device()->seek(0); // Go to beginning of block.
@@ -152,6 +158,7 @@ void TripPlanner::sendRequest()
   
   stopSearch();
 }
+
 
 int TripPlanner::stationRemove(double station, QString busName, int space)
 {
@@ -269,5 +276,5 @@ void TripPlanner::error()
 {
   qDebug() << "ERROR: " << this->errorString();
   // Try connecting again after 500ms
-  QTimer::singleShot(500,this,SLOT(startSending()));
+  QTimer::singleShot(500,this,SLOT(connectToServer()));
 }

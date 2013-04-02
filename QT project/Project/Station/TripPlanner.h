@@ -9,7 +9,7 @@ class TripPlanner: public QTcpSocket
 {
   Q_OBJECT
   public:
-    TripPlanner(char *name, char *id, QObject *parent = 0);
+    TripPlanner(char *name, char *id, QMutex *inmutex, QObject *parent = 0);
   public slots:
     void startSending();
   private slots:
@@ -34,6 +34,8 @@ class TripPlanner: public QTcpSocket
     int peopleGettingOff;
     int peopleGettingOn;
     int space;
+    
+    QMutex *mutex;
     
     bool finished;
     

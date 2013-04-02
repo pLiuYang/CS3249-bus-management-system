@@ -41,7 +41,7 @@ void StationUpdater::createBus(int busID, char* busName)
     char bus_id[10];
     snprintf(bus_id, sizeof(bus_id), "%d", busID);
     QThread *bus = new QThread();
-    TripPlanner *newBus = new TripPlanner(busName,bus_id);
+    TripPlanner *newBus = new TripPlanner(busName,bus_id,&mutex);
     newBus->moveToThread(bus);
     connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
     connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
@@ -115,7 +115,7 @@ void StationUpdater::createBusA1()
   if (id >= 0) {
     snprintf(bus_id, sizeof(bus_id), "%d", id);
     QThread *bus = new QThread();
-    TripPlanner *newBus = new TripPlanner("A1",bus_id);
+    TripPlanner *newBus = new TripPlanner("A1",bus_id,&mutex);
     newBus->moveToThread(bus);
     connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
     connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
@@ -133,7 +133,7 @@ void StationUpdater::createBusA2()
   if (id >= 0) {
     snprintf(bus_id, sizeof(bus_id), "%d", id);
     QThread *bus = new QThread();
-    TripPlanner *newBus = new TripPlanner("A2",bus_id);
+    TripPlanner *newBus = new TripPlanner("A2",bus_id,&mutex);
     newBus->moveToThread(bus);
     connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
     connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
@@ -151,7 +151,7 @@ void StationUpdater::createBusB()
   if (id >= 0) {
     snprintf(bus_id, sizeof(bus_id), "%d", id);
     QThread *bus = new QThread();
-    TripPlanner *newBus = new TripPlanner("B",bus_id);
+    TripPlanner *newBus = new TripPlanner("B",bus_id,&mutex);
     newBus->moveToThread(bus);
     connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
     connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
@@ -169,7 +169,7 @@ void StationUpdater::createBusC()
   if (id >= 0) {
     snprintf(bus_id, sizeof(bus_id), "%d", id);
     QThread *bus = new QThread();
-    TripPlanner *newBus = new TripPlanner("C",bus_id);
+    TripPlanner *newBus = new TripPlanner("C",bus_id,&mutex);
     newBus->moveToThread(bus);
     connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
     connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
@@ -187,7 +187,7 @@ void StationUpdater::createBusD1()
   if (id >= 0) {
     snprintf(bus_id, sizeof(bus_id), "%d", id);
     QThread *bus = new QThread();
-    TripPlanner *newBus = new TripPlanner("D1",bus_id);
+    TripPlanner *newBus = new TripPlanner("D1",bus_id,&mutex);
     newBus->moveToThread(bus);
     connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
     connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));
@@ -205,7 +205,7 @@ void StationUpdater::createBusD2()
   if (id >= 0) {
     snprintf(bus_id, sizeof(bus_id), "%d", id);
     QThread *bus = new QThread();
-    TripPlanner *newBus = new TripPlanner("D2",bus_id);
+    TripPlanner *newBus = new TripPlanner("D2",bus_id,&mutex);
     newBus->moveToThread(bus);
     connect(bus, SIGNAL(started()), newBus, SLOT(startSending()));
     connect(newBus, SIGNAL(workFinished()), bus, SLOT(quit()));

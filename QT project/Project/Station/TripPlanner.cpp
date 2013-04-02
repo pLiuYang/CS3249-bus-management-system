@@ -6,7 +6,7 @@
 #include "../Shared.h"
 #include <math.h>
 
-TripPlanner::TripPlanner(char *name,char *id, QObject *parent):QTcpSocket(parent)
+TripPlanner::TripPlanner(char *name,char *id, QMutex *inmutex, QObject *parent):QTcpSocket(parent)
 {
   std::stringstream strValue;
   strValue << id;
@@ -15,6 +15,8 @@ TripPlanner::TripPlanner(char *name,char *id, QObject *parent):QTcpSocket(parent
   busName = QString(name);
   finished = false;
   lastStation = -1;
+  
+  mutex = inmutex;
   
   // Determine Start Station
   station = 0.0;
@@ -195,13 +197,14 @@ int TripPlanner::stationRemove(double station, QString busName, int space)
   
   
   // Decrement station
+  mutex->lock();
   if (busName.startsWith("A1")) peopleAtStation[stationA1[astation]] = peopleAtStation[stationA1[astation]] - peopleGettingOn;
   else if (busName.startsWith("A2")) peopleAtStation[stationA2[astation]] = peopleAtStation[stationA2[astation]] - peopleGettingOn;
   else if (busName.startsWith("B")) peopleAtStation[stationB[astation]] = peopleAtStation[stationB[astation]] - peopleGettingOn;
   else if (busName.startsWith("C")) peopleAtStation[stationC[astation]] = peopleAtStation[stationC[astation]] - peopleGettingOn;
   else if (busName.startsWith("D1")) peopleAtStation[stationD1[astation]] = peopleAtStation[stationD1[astation]] - peopleGettingOn;
   else if (busName.startsWith("D2")) peopleAtStation[stationD2[astation]] = peopleAtStation[stationD2[astation]] - peopleGettingOn;
- 
+ mutex->unlock();
   
   return peopleGettingOn;
 }

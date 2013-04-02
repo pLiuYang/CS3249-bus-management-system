@@ -269,6 +269,5 @@ void TripPlanner::error()
 {
   qDebug() << "ERROR: " << this->errorString();
   // Try connecting again after 500ms
-  closeConnection();
-  exit(1);
+  QTimer::singleShot(500,this,SLOT(startSending()));
 }

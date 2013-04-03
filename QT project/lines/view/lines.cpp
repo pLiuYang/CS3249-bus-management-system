@@ -18,6 +18,32 @@ int routeCy[ROUTE_C]  ={100,100,100,100,100,100,100,100};
 
 int busID[MAX_NUM_OF_BUS]={0};
 
+//buses stop at stations
+int bss[22][6] = {
+	{1},
+	{2},
+	{3,2},
+	{1,4},
+	{1,2,3,4,5},
+	{2,3,5},
+	{2,3,5},
+	{1,4,5},
+	{2,3,5},
+	{1,4,5},
+	{2,3,5},
+	{1,4,5},
+	{2,3,5},
+	{4,3},
+	{5,6},
+	{2,3,6},
+	{1,4,6},
+	{1,4,6},
+	{2,3,6},
+	{1,4,6},
+	{2,3,6},
+	{2}
+};
+
 
 //**************** init **************//
 
@@ -26,14 +52,15 @@ Lines::Lines(TripServer *trip, QWidget *parent)
 {
 	server = trip;
 	stop=NULL;
+	highlight = 0;
 	
 	//create button for sending a bus
-	sendBus[0] = new QPushButton (tr("Send Bus A1"),this);
-	sendBus[1] = new QPushButton (tr("Send Bus A2"),this);
-	sendBus[2] = new QPushButton (tr("Send Bus D1"),this);
-	sendBus[3] = new QPushButton (tr("Send Bus D2"),this);
-	sendBus[4] = new QPushButton (tr("Send Bus B"),this);
-	sendBus[5] = new QPushButton (tr("Send Bus C"),this);
+	sendBus[0] = new SendBusButton (tr("Send Bus A1"),this,this,1);
+	sendBus[1] = new SendBusButton (tr("Send Bus A2"),this,this,2);
+	sendBus[2] = new SendBusButton (tr("Send Bus D1"),this,this,3);
+	sendBus[3] = new SendBusButton (tr("Send Bus D2"),this,this,4);
+	sendBus[4] = new SendBusButton (tr("Send Bus B"),this,this,5);
+	sendBus[5] = new SendBusButton (tr("Send Bus C"),this,this,6);
 	//set button names
 	sendBus[0] -> setObjectName("SendA1");
 	sendBus[1] -> setObjectName("SendA2");
@@ -175,13 +202,59 @@ void Lines::paintEvent(QPaintEvent *e)
 {
   Q_UNUSED(e);
   QPainter qp(this);
+  
   drawLines(&qp);
 }
 
 void Lines::drawLines(QPainter *qp)
 { 
-  //BUS B route
-  QPen pen(Qt::green, 4, Qt::SolidLine);  
+  //color
+  QColor blue = QColor (102,204,255,255);
+  QColor orange = QColor (255,204,0,225);
+  QColor pink = QColor (255,204,203,255);
+  QColor brown = QColor (135,206,250,255);
+  QColor gray = QColor (224, 224, 224, 224);
+  
+  //bus color
+  QColor colorArr[7];
+  
+  //route width
+  int wid[7];
+  
+  for (int i = 1; i<7; i++) {
+  	colorArr[i] = gray;
+  	wid[i] = 4;
+  }
+  
+  switch (highlight) {
+  case 1:
+  case 2:
+  	colorArr[1] = orange;
+  	wid[1] = 6;
+  	break;
+  case 3:
+  case 4:
+  	colorArr[3] = blue;
+  	wid[3] = 8;
+  	break;	
+  case 5:
+  	colorArr[5] = Qt::green;
+  	wid[5] = 8;
+  	break;
+  case 6:
+  	colorArr[6] = pink;
+  	wid[6] = 6;
+  	break;
+  default: // highlight == 0
+  	colorArr[1] = orange;
+    colorArr[3] = blue;
+    colorArr[5] = Qt::green;
+    colorArr[6] = pink;
+    break;
+  }  
+  
+  //BUS B route  
+  QPen pen(colorArr[5], wid[5], Qt::SolidLine); 
   qp->setPen(pen);
   qp->drawLine( 50, 106, 205, 106);
   qp->drawLine(205, 105, 300, 200);
@@ -192,8 +265,7 @@ void Lines::drawLines(QPainter *qp)
   qp->drawLine(400, 500, 300, 400);
   
   //BUS D1/D2 route
-  QColor blue = QColor (102,204,255,255);
-  QPen pen2(blue, 4, Qt::SolidLine);  
+  QPen pen2(colorArr[3], wid[3], Qt::SolidLine);  
   qp->setPen(pen2);
   qp->drawLine(196, 102, 196,  20);
   qp->drawLine(196,  94, 800,  94);
@@ -205,8 +277,7 @@ void Lines::drawLines(QPainter *qp)
   qp->drawLine(295, 405, 650, 405);
   
   //BUS A1/A2 route
-  QColor orange = QColor (255,204,0,225);
-  QPen pen3(orange, 4, Qt::SolidLine);  
+  QPen pen3(colorArr[1], wid[1], Qt::SolidLine);  
   qp->setPen(pen3);
   qp->drawLine(900, 250, 800, 106);
   qp->drawLine(800, 106, 214, 106);
@@ -219,13 +290,11 @@ void Lines::drawLines(QPainter *qp)
   qp->drawLine(494, 494, 494, 300);
   
   //BUS C route
-  QColor pink = QColor (255,204,203,255);
-  QPen pen4(pink, 4, Qt::SolidLine);  
+  QPen pen4(colorArr[6], wid[6], Qt::SolidLine);  
   qp->setPen(pen4);
   qp->drawLine( 50, 100, 800, 100);
   
   //connect oppsite busstops
-  QColor brown = QColor (135,206,250,255);
   QPen pen5(brown, 4, Qt::SolidLine);
   //pen4.setStyle(Qt::DashLine);  
   qp->setPen(pen5);
@@ -238,7 +307,7 @@ void Lines::drawLines(QPainter *qp)
   qp->drawLine(800,  90, 800, 110);
   qp->drawLine(890, 250, 910, 250);
   
-  
+  update();
 }
 
 //********************** controller *********************//
@@ -495,18 +564,125 @@ void Lines::terminateBus(int busid){
 	busID[busid]=0;
 }
 
+void Lines::updateHighlightVar(int id) {
+	highlight = id;
+}
+
+void Lines::highlightRoute(QPainter *qp) {
+	//BUS B route
+  	QPen pen(Qt::green, 100, Qt::SolidLine);  
+  	qp->setPen(pen);
+  	qp->drawLine( 50, 106, 205, 106);
+  	qp->drawLine(205, 105, 300, 200);
+  	qp->drawLine(300, 200, 300, 400);
+    qp->drawLine(300, 400, 500, 400);
+    qp->drawLine(500, 300, 500, 500);
+    qp->drawLine(500, 500, 400, 500);
+    qp->drawLine(400, 500, 300, 400);
+  
+	//BUS D1/D2 route
+	QColor blue = QColor (102,204,255,255);
+	QPen pen2(blue, 4, Qt::SolidLine);  
+	qp->setPen(pen2);
+	qp->drawLine(196, 102, 196,  20);
+	qp->drawLine(196,  94, 800,  94);
+	qp->drawLine(197, 104, 293, 200);
+	qp->drawLine(294, 202, 294, 402);
+	qp->drawLine(294, 402, 396, 504);
+	qp->drawLine(396, 505, 502, 505);
+	qp->drawLine(505, 505, 505, 300);
+	qp->drawLine(295, 405, 650, 405);
+
+	//BUS A1/A2 route
+	QColor orange = QColor (255,204,0,225);
+	QPen pen3(orange, 4, Qt::SolidLine);  
+	qp->setPen(pen3);
+	qp->drawLine(900, 250, 800, 106);
+	qp->drawLine(800, 106, 214, 106);
+	qp->drawLine(214, 106, 306, 198);
+	qp->drawLine(306, 200, 306, 396);
+	qp->drawLine(306, 394, 820, 394);
+	qp->drawLine(820, 394, 900, 250);
+	qp->drawLine(306, 398, 402, 494);
+	qp->drawLine(402, 494, 494, 494);
+	qp->drawLine(494, 494, 494, 300);
+
+	//BUS C route
+	QColor pink = QColor (255,204,203,255);
+	QPen pen4(pink, 4, Qt::SolidLine);  
+	qp->setPen(pen4);
+	qp->drawLine( 50, 100, 800, 100);
+
+	//connect oppsite busstops
+	QColor brown = QColor (135,206,250,255);
+	QPen pen5(brown, 4, Qt::SolidLine);
+	//pen4.setStyle(Qt::DashLine);  
+	qp->setPen(pen5);
+	qp->drawLine(650, 420, 650, 380);
+	qp->drawLine(290, 410, 315, 385);
+	qp->drawLine(290, 300, 310, 300);
+	qp->drawLine(290, 200, 310, 200);
+	qp->drawLine(400,  90, 400, 110);
+	qp->drawLine(600,  90, 600, 110);
+	qp->drawLine(800,  90, 800, 110);
+	qp->drawLine(890, 250, 910, 250);
+}
+
 void Lines::updateStation(int population, int stationID){
 	qDebug()<<"station "<<bstopArray[stationID]-> objectName() <<" population "<<population;
+	
+	int crowdLevel[7] = {0};
+	for (int i = 0; i<6; i++) {
+		if (bss[stationID][i] != 0)
+			crowdLevel[bss[stationID][i]] = sendBus[bss[stationID][i]-1]->getCrowd();
+		else
+			crowdLevel[bss[stationID][i]] = -1;
+	}
 	
 	if(population >50){
 		//over-populated warning
 		bstopArray[stationID] -> setStyleSheet("* { background-color: rgb(255,50,0); font: 9px; border-radius: 15px; }");
+		for (int i = 1; i<7; i++) {
+			if (crowdLevel[i] != -1) 
+				sendBus[bss[stationID][i]-1]->setCrowd(2);
+		}
 	}else if(population>30){
 		bstopArray[stationID] -> setStyleSheet("* { background-color: rgb(255,128,0); font: 9px; border-radius: 15px; }");
+		for (int i = 1; i<7; i++) {
+			if (crowdLevel[i] != -1 && crowdLevel[i] < 1) 
+				sendBus[bss[stationID][i]]->setCrowd(1);
+		}
 	}else{
 		//normal
 		bstopArray[stationID] -> setStyleSheet("* { background-color: rgb(135,206,250); font: 9px; border-radius: 15px; }");
+		/*for (int i = 1; i<7; i++) {
+			if (crowdLevel[i] != -1 && crowdLevel[i] < 1) {
+				sendBus[bss[stationID][i]]->setCrowd(0);
+				crowdLevel[i] = 0;	
+			}
+		}*/
 	}
+	
+	// update sending buttons
+	for (int i = 1; i<7; i++) {
+		if (crowdLevel[i] < 1)
+			continue;
+		
+		crowdLevel[i] = sendBus[i-1]->getCrowd();
+		
+		switch (crowdLevel[i]) {
+		case 0:
+			sendBus[i-1] -> setStyleSheet("* { background-color: rgb(135,206,250); font: 9px; border-radius: 15px; }");
+			break;
+		case 1:
+			sendBus[i-1] -> setStyleSheet("* { background-color: rgb(255,128,0); font: 9px; border-radius: 15px; }");
+			break;
+		case 2:
+			sendBus[i-1] -> setStyleSheet("* { background-color: rgb(255,50,0); font: 9px; border-radius: 15px; }");
+			break;
+		}
+	}
+	
 	QString p = QString::number(population);
 	QString tooltip = QString("<h2 style=\"margin-bottom:0px\">"+bstopArray[stationID]->objectName()+"</h2>") + QString("<span style=\"font:20px\">"+p+"</span> people waiting");
 	bstopArray[stationID] -> setToolTip(tooltip);

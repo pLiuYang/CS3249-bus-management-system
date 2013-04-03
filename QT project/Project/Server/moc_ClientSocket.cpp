@@ -1,8 +1,8 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'ClientSocket.h'
 **
-** Created: Mon Apr 1 21:50:13 2013
-**      by: The Qt Meta Object Compiler version 63 (Qt 4.8.2)
+** Created: Wed Apr 3 23:51:55 2013
+**      by: The Qt Meta Object Compiler version 62 (Qt 4.7.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -10,8 +10,8 @@
 #include "ClientSocket.h"
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'ClientSocket.h' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 63
-#error "This file was generated using the moc from 4.8.2. It"
+#elif Q_MOC_OUTPUT_REVISION != 62
+#error "This file was generated using the moc from 4.7.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,7 +20,7 @@ QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_ClientSocket[] = {
 
  // content:
-       6,       // revision
+       5,       // revision
        0,       // classname
        0,    0, // classinfo
        4,   14, // methods
@@ -48,28 +48,9 @@ static const char qt_meta_stringdata_ClientSocket[] = {
     "id\0terminalReached(int)\0readClient()\0"
 };
 
-void ClientSocket::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
-{
-    if (_c == QMetaObject::InvokeMetaMethod) {
-        Q_ASSERT(staticMetaObject.cast(_o));
-        ClientSocket *_t = static_cast<ClientSocket *>(_o);
-        switch (_id) {
-        case 0: _t->locationChanged((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
-        case 1: _t->populationChanged((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 2: _t->terminalReached((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 3: _t->readClient(); break;
-        default: ;
-        }
-    }
-}
-
-const QMetaObjectExtraData ClientSocket::staticMetaObjectExtraData = {
-    0,  qt_static_metacall 
-};
-
 const QMetaObject ClientSocket::staticMetaObject = {
     { &QTcpSocket::staticMetaObject, qt_meta_stringdata_ClientSocket,
-      qt_meta_data_ClientSocket, &staticMetaObjectExtraData }
+      qt_meta_data_ClientSocket, 0 }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
@@ -95,8 +76,13 @@ int ClientSocket::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
-            qt_static_metacall(this, _c, _id, _a);
+        switch (_id) {
+        case 0: locationChanged((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
+        case 1: populationChanged((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 2: terminalReached((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 3: readClient(); break;
+        default: ;
+        }
         _id -= 4;
     }
     return _id;

@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include "StopInfo.h"
+#include "SendBusButton.h"
 #include <QDebug>
 #include <QLabel>
 #include "../../Project/Shared.h"
@@ -17,6 +18,7 @@
 class StopInfo;
 class QPushButton;
 class QLabel;
+class SendBusButton;
 
 //class BusStopControl;
 class TripServer;
@@ -28,7 +30,7 @@ class Lines : public QWidget
     Lines(TripServer *trip, QWidget *parent = 0);
     QPushButton *bstopArray[22];
     QPushButton *busBtnArray[MAX_NUM_OF_BUS];
-    QPushButton *sendBus[6];
+    SendBusButton *sendBus[6];
 	TripServer *server;
 	QLabel *freeBus[6];
 
@@ -36,15 +38,17 @@ class Lines : public QWidget
 	void updateBus(float location, int busID, QString busName);
 	void updateStation(int population, int stationID);
 	void terminateBus(int busid);
+	void updateHighlightVar(int id);
+	
   protected:
     void paintEvent(QPaintEvent *event);
     void drawLines(QPainter *qp);
+    void highlightRoute(QPainter *qp);
 
   private slots:
     void popup();
     //void sendBus();
-    void send();
-    
+    void send();    
      	
   private:	
   	StopInfo    *stop;
@@ -52,5 +56,6 @@ class Lines : public QWidget
    //ostringstream convert;   // stream used for the conversion
     char* itos(int i);
   	//BusStopControl *bstopControl;
+  	int highlight;
 };
 #endif

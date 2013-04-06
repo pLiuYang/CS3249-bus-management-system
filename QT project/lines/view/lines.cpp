@@ -322,6 +322,7 @@ void Lines::send(){
 				break;
 			}
 		}
+		sendBus[0]->setCrowd(sendBus[0]->getCrowd()-2);
 	}else if(QObject::sender()-> objectName().compare("SendA2")==0){
 		for(int i=5;i<10;i++){
 			if(busID[i]==0){
@@ -330,6 +331,7 @@ void Lines::send(){
 				break;
 			}
 		}
+		sendBus[1]->setCrowd(sendBus[1]->getCrowd()-2);
 	}else if(QObject::sender()-> objectName().compare("SendD1")==0){
 		for(int i=10;i<15;i++){
 			if(busID[i]==0){
@@ -338,6 +340,7 @@ void Lines::send(){
 				break;
 			}
 		}
+		sendBus[2]->setCrowd(sendBus[2]->getCrowd()-2);
 	}else if(QObject::sender()-> objectName().compare("SendD2")==0){
 		for(int i=15;i<20;i++){
 			if(busID[i]==0){
@@ -346,6 +349,7 @@ void Lines::send(){
 				break;
 			}
 		}
+		sendBus[3]->setCrowd(sendBus[3]->getCrowd()-2);
 	}else if(QObject::sender()-> objectName().compare("SendB")==0){
 		for(int i=20;i<25;i++){
 			if(busID[i]==0){
@@ -354,6 +358,7 @@ void Lines::send(){
 				break;
 			}
 		}
+		sendBus[4]->setCrowd(sendBus[4]->getCrowd()-2);
 	}else{
 		for(int i=25;i<30;i++){
 			if(busID[i]==0){
@@ -362,6 +367,7 @@ void Lines::send(){
 				break;
 			}
 		}
+		sendBus[5]->setCrowd(sendBus[5]->getCrowd()-2);
 	}
 }
 //got better way to convert int to string?
@@ -631,11 +637,16 @@ void Lines::highlightRoute(QPainter *qp) {
 void Lines::updateStation(int population, int stationID){
 	qDebug()<<"station "<<bstopArray[stationID]-> objectName() <<" population "<<population;
 	
-	int crowdLevel[7] = {0};
+	QString p = QString::number(population);
+	QString tooltip = QString("<h2 style=\"margin-bottom:0px\">"+bstopArray[stationID]->objectName()+"</h2>") + QString("<span style=\"font:20px\">"+p+"</span> people waiting");
+	
+	float crowdLevel[7] = {0.0};
+	QString busName[6] = {"A1","A2","D1","D2","B","C"};
 	for (int i = 0; i<6; i++) {
-		if (bss[stationID][i] != 0)
+		if (bss[stationID][i] != 0) {
 			crowdLevel[bss[stationID][i]] = sendBus[bss[stationID][i]-1]->getCrowd();
-		else
+			tooltip += QString("<h2 style=\"margin-bottom:0px\">"+busName[i]+"</h2>") + QString("<span style=\"font:20px\">""</span> coming in N mins");
+		}else
 			crowdLevel[bss[stationID][i]] = -1;
 	}
 	
@@ -643,48 +654,40 @@ void Lines::updateStation(int population, int stationID){
 		//over-populated warning
 		bstopArray[stationID] -> setStyleSheet("* { background-color: rgb(255,50,0); font: 9px; border-radius: 15px; }");
 		for (int i = 1; i<7; i++) {
-			if (crowdLevel[i] != -1) 
-				sendBus[bss[stationID][i]-1]->setCrowd(2);
+			if (crowdLevel[i] > -0.1) 
+				sendBus[bss[stationID][i]-1]->setCrowd(2*0.1+crowdLevel[i]*0.9);
 		}
 	}else if(population>30){
 		bstopArray[stationID] -> setStyleSheet("* { background-color: rgb(255,128,0); font: 9px; border-radius: 15px; }");
 		for (int i = 1; i<7; i++) {
-			if (crowdLevel[i] != -1 && crowdLevel[i] < 1) 
-				sendBus[bss[stationID][i]]->setCrowd(1);
+			if (crowdLevel[i] > -0.1) 
+				sendBus[bss[stationID][i]]->setCrowd(1*0.1+crowdLevel[i]*0.9);
 		}
 	}else{
 		//normal
 		bstopArray[stationID] -> setStyleSheet("* { background-color: rgb(135,206,250); font: 9px; border-radius: 15px; }");
-		/*for (int i = 1; i<7; i++) {
-			if (crowdLevel[i] != -1 && crowdLevel[i] < 1) {
-				sendBus[bss[stationID][i]]->setCrowd(0);
-				crowdLevel[i] = 0;	
+		for (int i = 1; i<7; i++) {
+			if (crowdLevel[i] != -1) {
+				sendBus[bss[stationID][i]]->setCrowd(-0.1+crowdLevel[i]*0.9);
 			}
-		}*/
+		}
 	}
-	
+	/*
 	// update sending buttons
 	for (int i = 1; i<7; i++) {
-		if (crowdLevel[i] < 1)
+		if (crowdLevel[i] < 0.1)
 			continue;
 		
 		crowdLevel[i] = sendBus[i-1]->getCrowd();
 		
-		switch (crowdLevel[i]) {
-		case 0:
+		if (crowdLevel[i] < 0.1)
 			sendBus[i-1] -> setStyleSheet("* { background-color: rgb(135,206,250); font: 9px; border-radius: 15px; }");
-			break;
-		case 1:
+		else if (crowdLevel[i] < 1.1)
 			sendBus[i-1] -> setStyleSheet("* { background-color: rgb(255,128,0); font: 9px; border-radius: 15px; }");
-			break;
-		case 2:
+		else
 			sendBus[i-1] -> setStyleSheet("* { background-color: rgb(255,50,0); font: 9px; border-radius: 15px; }");
-			break;
-		}
-	}
+	}*/
 	
-	QString p = QString::number(population);
-	QString tooltip = QString("<h2 style=\"margin-bottom:0px\">"+bstopArray[stationID]->objectName()+"</h2>") + QString("<span style=\"font:20px\">"+p+"</span> people waiting");
 	bstopArray[stationID] -> setToolTip(tooltip);
 }
 

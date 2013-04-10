@@ -33,6 +33,7 @@ class Lines : public QWidget
     SendBusButton *sendBus[6];
 	TripServer *server;
 	QLabel *freeBus[6];
+	float busLocation[30];
 
   public slots:
 	void updateBus(float location, int busID, QString busName);

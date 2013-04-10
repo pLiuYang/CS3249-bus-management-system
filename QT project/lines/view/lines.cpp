@@ -21,27 +21,53 @@ int busID[MAX_NUM_OF_BUS]={0};
 //buses stop at stations
 int bss[22][6] = {
 	{1},
-	{2},
-	{3,2},
-	{1,4},
+	{0,2},
+	{1,2},
+	{1,0,0,4},
+	{0,2,3},
 	{1,2,3,4,5},
-	{2,3,5},
-	{2,3,5},
-	{1,4,5},
-	{2,3,5},
-	{1,4,5},
-	{2,3,5},
-	{1,4,5},
-	{2,3,5},
-	{4,3},
-	{5,6},
-	{2,3,6},
-	{1,4,6},
-	{1,4,6},
-	{2,3,6},
-	{1,4,6},
-	{2,3,6},
-	{2}
+	{0,2,3,0,5},
+	{0,2,3,0,5},
+	{1,0,0,4,5},
+	{0,2,3,0,5},
+	{1,0,0,4,5},
+	{0,2,3,0,5},
+	{1,0,0,4,5},
+	{0,2,3,0,5},
+	{0,0,4,3},
+	{0,0,0,0,5,6},
+	{0,2,3,0,0,6},
+	{1,0,0,4,0,6},
+	{1,0,0,4,0,6},
+	{0,2,3,0,0,6},
+	{1,0,0,4,0,6},
+	{0,2,3,0,0,6}
+};
+
+// station location on the route of buses
+float staLoc[22][6] = {
+	{1,0,0,0,0,0},
+	{0,11,0,0,0,0},
+	{0,0,0,0,0,0},
+	{9,0,0,8,0,0},
+	{0,2,0,0,0,0},
+	{8,1,2,7,4,0},
+	{0,3,2,0,5,0},
+	{0,4,3,0,6,0},
+	{7,0,0,6,3,0},
+	{0,5,4,0,7,0},
+	{6,0,0,5,2,0},
+	{0,6,5,0,8,0},
+	{5,0,0,4,1,0},
+	{0,7,6,0,9,0},
+	{0,0,7,3,0,0},
+	{0,0,0,0,0,0},
+	{0,8,8,0,0,1},
+	{4,0,0,2,0,2},
+	{3,0,0,1,0,5},
+	{0,9,9,0,0,2},
+	{2,0,0,0,0,4},
+	{0,10,10,0,0,3}
 };
 
 
@@ -170,6 +196,8 @@ Lines::Lines(TripServer *trip, QWidget *parent)
 		//busBtnArray[i]->setEnabled(false);
 		//hide bus first
 		busBtnArray[i]-> hide();
+		
+		busLocation[i] = 0.0;
 	}
 	
 	//apply custom style to buttons
@@ -416,6 +444,7 @@ void Lines::popup(){
 void Lines::updateBus(float location, int busID , QString busName) {
 	qDebug() << "bus "<<busID<<" updated at location "<<location;
 	busBtnArray[busID] -> show();
+	busLocation[busID] = location;
 	//check bus type
 	if(QString::compare(busName,"A1")==0){
 		int t = static_cast<int>(location);
@@ -444,6 +473,7 @@ void Lines::updateBus(float location, int busID , QString busName) {
 			busBtnArray[busID] -> setGeometry (routeA1x[t]*(1-p)+routeA1x[t2]*p, routeA1y[t]*(1-p)+routeA1y[t2]*p, 20, 20 );
 			qDebug()<<"x "<<routeA1x[t]*(1-p)<<" y "<<routeA1x[t2]*p;
 		}
+		if (location > 9.9) busLocation[busID] = 0;
 	}
 	if(QString::compare(busName,"A2")==0){
 		int t = static_cast<int>(location); //floor
@@ -466,6 +496,7 @@ void Lines::updateBus(float location, int busID , QString busName) {
 			busBtnArray[busID] -> setGeometry (routeA2x[t]*(1-p)+routeA2x[t2]*p, routeA2y[t]*(1-p)+routeA2y[t2]*p, 20, 20 );
 			qDebug()<<"x "<<routeA2x[t]*(1-p)<<" y "<<routeA2x[t2]*p;
 		}
+		if (location > 11.9) busLocation[busID] = 0;
 	}
 	if(QString::compare(busName,"D1")==0){
 		int t = static_cast<int>(location); //floor
@@ -493,6 +524,7 @@ void Lines::updateBus(float location, int busID , QString busName) {
 			busBtnArray[busID] -> setGeometry (routeD1x[t]*(1-p)+routeD1x[t2]*p, routeD1y[t]*(1-p)+routeD1y[t2]*p, 20, 20 );
 			qDebug()<<"x "<<routeD1x[t]*(1-p)<<" y "<<routeD1x[t2]*p;
 		}
+		if (location > 9.9) busLocation[busID] = 0;
 	}
 	if(QString::compare(busName,"D2")==0){
 		int t = static_cast<int>(location); //floor
@@ -526,6 +558,7 @@ void Lines::updateBus(float location, int busID , QString busName) {
 			busBtnArray[busID] -> setGeometry (routeD2x[t]*(1-p)+routeD2x[t2]*p, routeD2y[t]*(1-p)+routeD2y[t2]*p, 20, 20 );
 			qDebug()<<"x "<<routeD2x[t]*(1-p)<<" y "<<routeD2x[t2]*p;
 		}
+		if (location > 7.9) busLocation[busID] = 0;
 	}
 	if(QString::compare(busName,"B")==0){
 		int t = static_cast<int>(location); //floor
@@ -554,6 +587,7 @@ void Lines::updateBus(float location, int busID , QString busName) {
 			busBtnArray[busID] -> setGeometry (routeBx[t]*(1-p)+routeBx[t2]*p, routeBy[t]*(1-p)+routeBy[t2]*p, 20, 20 );
 			qDebug()<<"x "<<routeBx[t]*(1-p)<<" y "<<routeBx[t2]*p;
 		}
+		if (location > 9.9) busLocation[busID] = 0;
 	}
 	if(QString::compare(busName,"C")==0){
 		int t = static_cast<int>(location); //floor
@@ -562,6 +596,8 @@ void Lines::updateBus(float location, int busID , QString busName) {
 		
 		busBtnArray[busID] -> setGeometry (routeCx[t]*(1-p)+routeCx[t2]*p, routeCy[t]*(1-p)+routeCy[t2]*p, 20, 20 );
 		qDebug()<<"x "<<routeCx[t]*(1-p)<<" y "<<routeCx[t2]*p;
+		
+		if (location > 6.9) busLocation[busID] = 0;
 	}
 }
 
@@ -640,37 +676,37 @@ void Lines::updateStation(int population, int stationID){
 	QString p = QString::number(population);
 	QString tooltip = QString("<h2 style=\"margin-bottom:0px\">"+bstopArray[stationID]->objectName()+"</h2>") + QString("<span style=\"font:20px\">"+p+"</span> people waiting");
 	
-	float crowdLevel[7] = {0.0};
+	//float crowdLevel[7] = {0.0};
 	QString busName[6] = {"A1","A2","D1","D2","B","C"};
 	for (int i = 0; i<6; i++) {
 		if (bss[stationID][i] != 0) {
-			crowdLevel[bss[stationID][i]] = sendBus[bss[stationID][i]-1]->getCrowd();
-			tooltip += QString("<h2 style=\"margin-bottom:0px\">"+busName[i]+"</h2>") + QString("<span style=\"font:20px\">""</span> coming in N mins");
-		}else
-			crowdLevel[bss[stationID][i]] = -1;
+			//crowdLevel[bss[stationID][i]] = sendBus[bss[stationID][i]-1]->getCrowd();
+		
+			float d = 100.0;
+			for (int j = i*5; j < i*5+5; j++) {
+				float dTemp = staLoc[stationID][i] - busLocation[j];
+				if (dTemp > 0 && dTemp < d && busLocation[j] > 0.05)
+					d = dTemp;
+			}
+			
+			if (d > 80)
+				tooltip += QString("<h2 style=\"margin-bottom:0px\">"+busName[i]+"</h2>") + QString("<span style=\"font:20px\">""</span> is not coming!");
+			else {
+				QString t;
+				t.setNum(d * 3);
+				tooltip += QString("<h2 style=\"margin-bottom:0px\">"+busName[i]+"</h2>") + QString("<span style=\"font:20px\">""</span> coming in ") + QString("<span style=\"font:15px\">"+t+"</span>") + QString("<span style=\"font:20px\">""</span> mins");
+			}
+		}
 	}
 	
 	if(population >50){
 		//over-populated warning
 		bstopArray[stationID] -> setStyleSheet("* { background-color: rgb(255,50,0); font: 9px; border-radius: 15px; }");
-		for (int i = 1; i<7; i++) {
-			if (crowdLevel[i] > -0.1) 
-				sendBus[bss[stationID][i]-1]->setCrowd(2*0.1+crowdLevel[i]*0.9);
-		}
 	}else if(population>30){
 		bstopArray[stationID] -> setStyleSheet("* { background-color: rgb(255,128,0); font: 9px; border-radius: 15px; }");
-		for (int i = 1; i<7; i++) {
-			if (crowdLevel[i] > -0.1) 
-				sendBus[bss[stationID][i]]->setCrowd(1*0.1+crowdLevel[i]*0.9);
-		}
 	}else{
 		//normal
 		bstopArray[stationID] -> setStyleSheet("* { background-color: rgb(135,206,250); font: 9px; border-radius: 15px; }");
-		for (int i = 1; i<7; i++) {
-			if (crowdLevel[i] != -1) {
-				sendBus[bss[stationID][i]]->setCrowd(-0.1+crowdLevel[i]*0.9);
-			}
-		}
 	}
 	/*
 	// update sending buttons
